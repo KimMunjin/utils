@@ -62,7 +62,7 @@ publishing {
             from(components["java"])
             version = "0.0.1"
             groupId = "kr.or.komca"
-            artifactId = "common-utils"
+            artifactId = "utils"
         }
     }
 }
