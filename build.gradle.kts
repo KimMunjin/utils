@@ -56,9 +56,13 @@ publishing {
             }
         }
     }
+
     publications {
         create<MavenPublication>("gpr") {
             from(components["java"])
+            version = "0.0.1"
+            groupId = "kr.or.komca"
+            artifactId = "common-utils"
         }
     }
 }
