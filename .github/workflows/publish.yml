@@ -3,8 +3,7 @@ name: Publish Package
 
 on:
   push:
-    tags:
-      - 'v*'  # v로 시작하는 태그 푸시 시 실행
+    branches: [main]
 
 jobs:
   publish:
