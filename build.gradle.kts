@@ -63,6 +63,15 @@ publishing {
             version = "0.0.1"
             groupId = "kr.or.komca"
             artifactId = "utils"
+
+            versionMapping {
+                usage("java-api") {
+                    fromResolutionOf("runtimeClasspath")
+                }
+                usage("java-runtime") {
+                    fromResolutionResult()
+                }
+            }
         }
     }
 }
