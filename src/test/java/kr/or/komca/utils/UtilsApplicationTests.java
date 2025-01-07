@@ -1,4 +1,4 @@
-package kr.or.komca.utils.utils;
+package kr.or.komca.utils;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
