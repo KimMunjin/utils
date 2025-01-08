@@ -42,6 +42,7 @@ jobs:
               - 'hotfix:'         # 긴급 수정
               - 'patch:'          # 작은 수정
               - 'chore:'          # 유지보수
+              - 'refactor:'       # 코드 개선
 
             - name: Update version in build.gradle.kts
               run: |
