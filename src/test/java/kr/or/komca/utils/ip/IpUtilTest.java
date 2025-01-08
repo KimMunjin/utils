@@ -51,22 +51,24 @@ class IpUtilTest {
     // 여러 IP가 포함된 경우 첫 번째 IP 추출 테스트
     @Test
     void testGetClientIp_withMultipleIps() {
-        // HTTP 요청 객체 모의 생성
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 
-        // 모든 헤더 요청에 대해 기본적으로 null 반환하도록 설정
-        when(request.getHeader(Mockito.anyString())).thenReturn(null);
+        // mock(HttpServletRequest.class)는 기본적으로 모든 메서드 호출에 대해 null을 반환하므로, 헤더 값을 null로 설정할 필요가 없음
 
-        // X-Forwarded-For 헤더에 여러 IP가 포함된 값 설정
+        // X-Forwarded-For 헤더 설정
         when(request.getHeader("X-Forwarded-For")).thenReturn("192.168.0.1, 10.0.0.1");
-        // getRemoteAddr 값 설정
+
+        // RemoteAddr 설정
         when(request.getRemoteAddr()).thenReturn("127.0.0.1");
 
-        // IP 추출 메서드 호출
+        // getClientIp 호출 및 결과 확인
         String clientIp = IpUtil.getClientIp(request);
 
-        // 첫 번째 IP가 반환되는지 검증
+        // 검증
         assertEquals("192.168.0.1", clientIp);
+
+        // Mock이 호출되었는지 검증
+        Mockito.verify(request, Mockito.atLeastOnce()).getHeader("X-Forwarded-For");
     }
 
     // null 요청에 대한 처리 테스트
@@ -89,6 +91,15 @@ class IpUtilTest {
         // IP 추출 메서드 호출
         String clientIp = IpUtil.getClientIp(request);
         // IPv6가 IPv4로 변환되는지 검증
+        assertEquals("127.0.0.1", clientIp);
+    }
+
+    @Test
+    void testGetClientIp_withIPv6Short() {
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        when(request.getRemoteAddr()).thenReturn("::1");
+
+        String clientIp = IpUtil.getClientIp(request);
         assertEquals("127.0.0.1", clientIp);
     }
 
@@ -121,6 +132,10 @@ class IpUtilTest {
         assertTrue(IpUtil.isLocalIp("172.16.0.1"));
         // 공인 IP 검증
         assertFalse(IpUtil.isLocalIp("8.8.8.8"));
+
+        // IPv6 관련 테스트
+        assertTrue(IpUtil.isLocalIp("::1")); // IPv6 short form
+        assertTrue(IpUtil.isLocalIp("0:0:0:0:0:0:0:1")); // IPv6 full form
     }
 
     // IPv6 변환 가능 여부 테스트
@@ -132,5 +147,8 @@ class IpUtilTest {
         assertTrue(IpUtil.isConvertibleIPv6("::ffff:192.168.1.1"));
         // 일반 IPv4 주소 검증
         assertFalse(IpUtil.isConvertibleIPv6("192.168.1.1"));
+
+        // 6to4 주소 테스트 추가
+        assertTrue(IpUtil.isConvertibleIPv6("2002:c0a8:0101::"));
     }
 }
