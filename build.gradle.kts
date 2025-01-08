@@ -55,7 +55,7 @@ publishing {
         maven {
             name = "GitHubPackages"
             // url은 https://maven.pkg.github.com/YOUR_ORGANIZATION/githun repository 이름
-            url = uri("https://maven.pkg.github.com/KimMunjin/utils")
+            url = uri("https://maven.pkg.github.com/${System.getenv("GITHUB_REPOSITORY")}")
             credentials {
                 username = System.getenv("GITHUB_ACTOR") // workflows를 실행시킨 사용자 자동 설정
                 password = System.getenv("GITHUB_TOKEN") // Actions에서 자동 생성되는 토큰

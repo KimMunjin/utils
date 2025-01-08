@@ -29,10 +29,25 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: patch    # 기본값은 patch 증가
           release_branches: main
-          tag_prefix: "v"
-          major_pattern: "major:|BREAKING CHANGE:|BREAKING-CHANGE:"  # 주요 변경사항
-          minor_pattern: "feat:|feature:|minor:|enhance:|improvement:"  # 기능 추가/개선
-          patch_pattern: "fix:|patch:|hotfix:|bugfix:|chore:|refactor:|docs:|style:|test:|ci:|build:"  # 버그수정/유지보수
+          tag_prefix: "v"  # 태그 prefix 추가
+          custom_release_rules: |
+            major:major:Major Changes
+            BREAKING CHANGE:major:Breaking Changes
+            BREAKING-CHANGE:major:Breaking Changes
+            feat:minor:Features
+            feature:minor:Features
+            minor:minor:Minor Changes
+            enhance:minor:Enhancements
+            improvement:minor:Improvements
+            fix:patch:Bug Fixes
+            patch:patch:Patches
+            hotfix:patch:Hot Fixes
+            bugfix:patch:Bug Fixes
+            chore:patch:Chores
+            refactor:patch:Refactoring
+            docs:patch:Documentation
+            style:patch:Styling
+            test:patch:Testing
 
       - name: Update version in build.gradle.kts
         run: |
@@ -48,3 +63,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEW_VERSION: ${{ steps.tag_version.outputs.new_version }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
