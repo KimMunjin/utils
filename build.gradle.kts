@@ -66,7 +66,7 @@ publishing {
     publications {
         create<MavenPublication>("gpr") {
             from(components["java"])
-            version = System.getenv("NEW_VERSION") ?: "0.0.1-SNAPSHOT"  // workflow의 NEW_VERSION 환경변수 사용
+            version = System.getenv("NEW_VERSION") ?: "0.0.1-SNAPSHOT"  // workflows의 NEW_VERSION 환경변수 사용
             groupId = "kr.or.komca"
             artifactId = "utils"
 
