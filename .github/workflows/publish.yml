@@ -29,20 +29,10 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           default_bump: patch    # 기본값은 patch 증가
           release_branches: main
-          custom_release_rules: |
-            major:
-              - 'BREAKING CHANGE:'  # 주요 변경사항
-              - 'major:'           # 호환성이 깨지는 변경
-            minor:
-              - 'feat:'            # 새로운 기능
-              - 'feature:'         # 새로운 기능
-              - 'minor:'           # 기능 개선
-            patch:
-              - 'fix:'            # 버그 수정
-              - 'hotfix:'         # 긴급 수정
-              - 'patch:'          # 작은 수정
-              - 'chore:'          # 유지보수
-              - 'refactor:'       # 코드 개선
+          tag_prefix: "v"
+          major_pattern: "major:|BREAKING CHANGE:|BREAKING-CHANGE:"  # 주요 변경사항
+          minor_pattern: "feat:|feature:|minor:|enhance:|improvement:"  # 기능 추가/개선
+          patch_pattern: "fix:|patch:|hotfix:|bugfix:|chore:|refactor:|docs:|style:|test:|ci:|build:"  # 버그수정/유지보수
 
       - name: Update version in build.gradle.kts
         run: |
